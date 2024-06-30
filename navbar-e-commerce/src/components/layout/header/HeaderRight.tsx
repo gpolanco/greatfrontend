@@ -14,7 +14,9 @@ export const HeaderRight: FC<IHeaderRightProps> = () => {
   return (
     <div className="flex gap-4 ml-auto">
       <ShoppingCartButton />
-      <ToggleMenu onClick={handleToggleMenu} isOpen={isOpen} />
+      {isOpen ? null : (
+        <ToggleMenu onClick={handleToggleMenu} isOpen={isOpen} />
+      )}
       {isOpen && <MobileMenu onClose={handleToggleMenu} />}
     </div>
   );

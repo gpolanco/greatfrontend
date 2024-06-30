@@ -13,8 +13,11 @@ export const Credits: FC<ICreditsProps> = () => {
         GreatFrontEnd Projects
       </a>
       . Built by
-      <a href="https://www.greatfrontend.com/u/your_username" target="_blank">
-        Your Name
+      <a
+        href="https://www.greatfrontend.com/projects/u/frontendTips"
+        target="_blank"
+      >
+        FrontendTips
       </a>
       .
     </div>
