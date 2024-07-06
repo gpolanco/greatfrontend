@@ -14,8 +14,10 @@ export interface ReviewContextProps {
   aggregate?: ReviewResponseType["aggregate"];
   error: string | null;
   handleLoadMoreReviews: () => void;
-  handleLoadReviewByRating: (rating: number) => void;
+  handleClearFilter: () => void;
+  handleFilter: (rating: number) => void;
   hasMore: boolean;
+  isFilterActive: boolean;
   reviews: ReviewResponseType["data"];
   reviewToShow: number;
   loading: {
@@ -24,11 +26,9 @@ export interface ReviewContextProps {
     isFiltering: boolean;
   };
 }
-
 export const ReviewContext = createContext<ReviewContextProps | undefined>(
   undefined
 );
-
 interface ReviewProviderProps {
   children: React.ReactNode;
 }
@@ -43,6 +43,8 @@ export const ReviewProvider: FC<ReviewProviderProps> = ({ children }) => {
   const [isFiltering, setIsFiltering] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [reviewData, setReviewData] = useState<ReviewResponseType | null>(null);
+  const [isFilterActive, setIsFilterActive] = useState(false);
+  const params = useMemo(() => new URLSearchParams(window.location.search), []);
 
   // Hooks
   const { pageSize } = useReviewPageSize();
@@ -56,9 +58,20 @@ export const ReviewProvider: FC<ReviewProviderProps> = ({ children }) => {
   useEffect(() => {
     setIsLoading(true);
 
+    // Check if exist rating query param
+    const rating = params.get("rating")
+      ? parseInt(params.get("rating")!)
+      : undefined;
+
+    if (rating) {
+      setIsFilterActive(true);
+    }
+
+    // Load data
     getReviews({
       limit: pageSize,
       page: 1,
+      rating,
     }).then(({ data, error, ok }) => {
       if (error) {
         setError(error);
@@ -120,7 +133,7 @@ export const ReviewProvider: FC<ReviewProviderProps> = ({ children }) => {
    * Load reviews by rating
    */
   const handleLoadReviewByRating = useCallback(
-    async (rating: number) => {
+    async (rating?: number) => {
       setIsFiltering(true);
 
       const { data, error, ok } = await getReviews({
@@ -141,6 +154,44 @@ export const ReviewProvider: FC<ReviewProviderProps> = ({ children }) => {
     },
     [pageSize]
   );
+
+  // FILTER PARAMS
+  // ------------------------------------------------------------
+  /**
+   * Filter reviews by rating
+   * @param rating - The rating to filter by
+   */
+  const handleFilter = useCallback(
+    (rating: number) => {
+      params.delete("rating");
+      params.append("rating", rating.toString());
+
+      setIsFilterActive(true);
+      handleLoadReviewByRating(rating);
+
+      window.history.pushState(
+        {},
+        "",
+        `${window.location.pathname}?${params.toString()}`
+      );
+    },
+    [handleLoadReviewByRating, params]
+  );
+
+  /**
+   * Clear the filter by removing the rating query param
+   */
+  const handleClearFilter = useCallback(() => {
+    params.delete("rating");
+
+    setIsFilterActive(false);
+    handleLoadReviewByRating();
+
+    window.history.pushState({}, "", window.location.pathname);
+  }, [handleLoadReviewByRating, params]);
+
+  // CONTEXT VALUE
+  // ------------------------------------------------------------
 
   /**
    * Memoized value to avoid re-renders
@@ -170,17 +221,23 @@ export const ReviewProvider: FC<ReviewProviderProps> = ({ children }) => {
         isFiltering,
         isLoadingMore,
       },
+      aggregate: reviewData?.aggregate,
       error,
-      hasMore: reviewData?.pagination?.has_more ?? false,
+      handleClearFilter,
+      handleFilter,
       handleLoadMoreReviews,
       handleLoadReviewByRating,
+      hasMore: reviewData?.pagination?.has_more ?? false,
+      isFilterActive,
       reviewToShow,
-      aggregate: reviewData?.aggregate,
     };
   }, [
     error,
+    handleClearFilter,
+    handleFilter,
     handleLoadMoreReviews,
     handleLoadReviewByRating,
+    isFilterActive,
     isFiltering,
     isLoading,
     isLoadingMore,

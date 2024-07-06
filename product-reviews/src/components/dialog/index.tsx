@@ -26,7 +26,12 @@ export const Dialog: FC<IDialogProps> = ({
         <div className="flex justify-between p-6">
           <h4>{title}</h4>
 
-          <IconClose />
+          <button
+            type="button"
+            className="w-6 h-6 focus:outline-none focus:ring focus:ring-indigo-200 rounded"
+          >
+            <IconClose />
+          </button>
         </div>
 
         <div className="flex flex-1 w-full">{children}</div>

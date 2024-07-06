@@ -2,31 +2,42 @@ import { FC } from "react";
 import { cn } from "../../../utils/mergeClass";
 
 interface IRatingValueProps {
+  /**
+   * Rating label
+   */
   label: string;
   /**
    * Rating percentage
    */
   value: number;
+  /**
+   * clear current applied filter
+   */
   onFilter?: () => void;
+  className?: string;
 }
 
 export const RatingValue: FC<IRatingValueProps> = ({
+  className,
   label,
-  value,
   onFilter,
+  value,
 }) => {
   return (
-    <button
-      type="button"
-      onClick={onFilter}
-      className="w-full h-6 justify-start items-center gap-2 inline-flex py-2 hover:rounded hover:bg-gray-100"
+    <div
+      className={cn(
+        "w-full h-6 justify-start items-center gap-2 inline-flex py-2",
+        className
+      )}
     >
-      <div className="min-w-[120px] h-6 rounded justify-start items-center gap-1.5 inline-flex">
-        <div className="px-0.5 justify-center items-center flex">
-          <div className="text-neutral-600 text-base font-medium font-['Noto Sans'] leading-normal">
-            {label}
-          </div>
-        </div>
+      <div className="min-w-[120px] ">
+        <button
+          type="button"
+          onClick={onFilter}
+          className="h-6 px-2 justify-start items-center gap-1.5 inline-flex text-indigo-800 text-base font-medium leading-normal focus:outline-none focus:ring focus:ring-indigo-200 rounded"
+        >
+          {label}
+        </button>
       </div>
 
       <div className="w-full h-2 relative rounded-lg">
@@ -46,6 +57,6 @@ export const RatingValue: FC<IRatingValueProps> = ({
       <div className="min-w-14 text-right text-neutral-600 text-base font-normal font-['Noto Sans'] leading-normal">
         {value}%
       </div>
-    </button>
+    </div>
   );
 };

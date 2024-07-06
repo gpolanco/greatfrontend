@@ -1,4 +1,3 @@
-import { Review } from "@/components/product-reviews/types/Review";
 import { Button } from "../../button";
 import { StarRating } from "../components/StarRating";
 import { RatingValue } from "./RatingValue";
@@ -6,25 +5,23 @@ import { FC, useMemo } from "react";
 import { round } from "@/utils/round";
 import { ReviewType } from "../types/ReviewType";
 import { cn } from "@/utils/mergeClass";
-import { ReviewResponseType } from "../services/core/ReviewReponseType";
 import { normalizeEnumKeyText } from "../utils/normatizeEnumKeyText";
 import { ReviewSummaryPlaceholder } from "./ReviewSummaryPlaceholder";
+import { useReviewContext } from "../hooks/useReviewContext";
 
 interface IReviewSummaryProps {
-  reviews: Review[];
-  onFilterReviews: (review: number) => void;
   className?: string;
-  isLoading?: boolean;
-  aggregate?: ReviewResponseType["aggregate"];
 }
 
-export const ReviewSummary: FC<IReviewSummaryProps> = ({
-  reviews = [],
-  onFilterReviews,
-  className,
-  aggregate,
-  isLoading,
-}) => {
+export const ReviewSummary: FC<IReviewSummaryProps> = ({ className }) => {
+  const {
+    loading,
+    aggregate,
+    handleFilter,
+    handleClearFilter,
+    isFilterActive,
+  } = useReviewContext();
+
   const normalizeRatingCount = useMemo(() => {
     if (!aggregate) {
       return { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
@@ -35,11 +32,7 @@ export const ReviewSummary: FC<IReviewSummaryProps> = ({
     }, {});
   }, [aggregate]);
 
-  const averageRating = reviews.length
-    ? reviews.reduce((acc, review) => {
-        return acc + review.rating;
-      }, 0) / reviews.length
-    : 0;
+  const averageRating = aggregate?.rating ?? 0;
 
   const calculateRatingByType = (type: ReviewType) => {
     if (!aggregate) {
@@ -49,7 +42,7 @@ export const ReviewSummary: FC<IReviewSummaryProps> = ({
     return (normalizeRatingCount[type] / aggregate.total) * 100;
   };
 
-  if (isLoading) {
+  if (loading.isLoading) {
     return <ReviewSummaryPlaceholder />;
   }
 
@@ -61,10 +54,10 @@ export const ReviewSummary: FC<IReviewSummaryProps> = ({
 
       <div className="flex gap-2">
         <span className="text-neutral-900 text-base font-semibold leading-normal">
-          {round(averageRating, 1)}
+          {averageRating}
         </span>
 
-        <StarRating value={round(averageRating, 1)} />
+        <StarRating value={averageRating} />
 
         <small className="text-neutral-600 text-sm font-normal leading-tight">
           Based on {aggregate?.total ?? 0} reviews
@@ -79,35 +72,19 @@ export const ReviewSummary: FC<IReviewSummaryProps> = ({
               <RatingValue
                 key={rating}
                 label={normalizeEnumKeyText(ReviewType[rating].toString())}
-                value={round(calculateRatingByType(rating), 2)}
-                onFilter={() => onFilterReviews(rating)}
+                value={round(calculateRatingByType(rating), 0)}
+                onFilter={() => handleFilter(rating)}
               />
             );
           })}
-
-        {/* <RatingValue
-          label="Good"
-          value={round(calculateRatingByType(ReviewType.Good), 2)}
-          onFilter={() => onFilterReviews(ReviewType.Good)}
-        />
-        <RatingValue
-          label="Average"
-          value={round(calculateRatingByType(ReviewType.Average), 2)}
-          onFilter={() => onFilterReviews(ReviewType.Average)}
-        />
-        <RatingValue
-          label="Below Average"
-          value={round(calculateRatingByType(ReviewType.BelowAverage), 2)}
-          onFilter={() => onFilterReviews(ReviewType.BelowAverage)}
-        />
-        <RatingValue
-          label="Poor"
-          value={round(calculateRatingByType(ReviewType.Poor), 2)}
-          onFilter={() => onFilterReviews(ReviewType.Poor)}
-        /> */}
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center gap-6">
+        {isFilterActive && (
+          <Button color="link" onClick={handleClearFilter}>
+            Clear filter
+          </Button>
+        )}
         <Button>Write a review</Button>
       </div>
     </div>

@@ -72,7 +72,11 @@ export const ReviewListItem: FC<IReviewListItemProps> = ({ review }) => {
       </div>
 
       {/* CONTENT */}
-      <p className="text-neutral-600 text-base font-normal">{review.content}</p>
+      {review.content && (
+        <p className="text-neutral-600 text-base font-normal">
+          {review.content}
+        </p>
+      )}
     </div>
   );
 };
