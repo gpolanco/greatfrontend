@@ -2,23 +2,39 @@ import { Review } from "@/components/product-reviews/types/Review";
 import { Button } from "../../button";
 import { StarRating } from "../components/StarRating";
 import { RatingValue } from "./RatingValue";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { round } from "@/utils/round";
 import { ReviewType } from "../types/ReviewType";
 import { cn } from "@/utils/mergeClass";
+import { ReviewResponseType } from "../services/core/ReviewReponseType";
+import { normalizeEnumKeyText } from "../utils/normatizeEnumKeyText";
+import { ReviewSummaryPlaceholder } from "./ReviewSummaryPlaceholder";
 
 interface IReviewSummaryProps {
   reviews: Review[];
-  onFilterReviews: (type: ReviewType) => void;
+  onFilterReviews: (review: number) => void;
   className?: string;
   isLoading?: boolean;
+  aggregate?: ReviewResponseType["aggregate"];
 }
 
 export const ReviewSummary: FC<IReviewSummaryProps> = ({
   reviews = [],
   onFilterReviews,
   className,
+  aggregate,
+  isLoading,
 }) => {
+  const normalizeRatingCount = useMemo(() => {
+    if (!aggregate) {
+      return { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    }
+
+    return aggregate.counts.reduce<Record<number, number>>((acc, review) => {
+      return { ...acc, [review.rating]: review.count };
+    }, {});
+  }, [aggregate]);
+
   const averageRating = reviews.length
     ? reviews.reduce((acc, review) => {
         return acc + review.rating;
@@ -26,16 +42,16 @@ export const ReviewSummary: FC<IReviewSummaryProps> = ({
     : 0;
 
   const calculateRatingByType = (type: ReviewType) => {
-    if (reviews.length === 0) {
+    if (!aggregate) {
       return 0;
     }
 
-    return (
-      (reviews.filter((review) => review.rating === type).length /
-        reviews.length) *
-      100
-    );
+    return (normalizeRatingCount[type] / aggregate.total) * 100;
   };
+
+  if (isLoading) {
+    return <ReviewSummaryPlaceholder />;
+  }
 
   return (
     <div className={cn(className, "px-6 pb-10 lg:pb-0")}>
@@ -51,17 +67,25 @@ export const ReviewSummary: FC<IReviewSummaryProps> = ({
         <StarRating value={round(averageRating, 1)} />
 
         <small className="text-neutral-600 text-sm font-normal leading-tight">
-          Based on {reviews.length} reviews
+          Based on {aggregate?.total ?? 0} reviews
         </small>
       </div>
 
       <div className="py-6 flex flex-col gap-4 flex-1 ">
-        <RatingValue
-          label="Excellent"
-          value={round(calculateRatingByType(ReviewType.Excellent), 2)}
-          onFilter={() => onFilterReviews(ReviewType.Excellent)}
-        />
-        <RatingValue
+        {aggregate?.counts
+          .sort((acc, current) => current.rating - acc.rating)
+          .map(({ rating }) => {
+            return (
+              <RatingValue
+                key={rating}
+                label={normalizeEnumKeyText(ReviewType[rating].toString())}
+                value={round(calculateRatingByType(rating), 2)}
+                onFilter={() => onFilterReviews(rating)}
+              />
+            );
+          })}
+
+        {/* <RatingValue
           label="Good"
           value={round(calculateRatingByType(ReviewType.Good), 2)}
           onFilter={() => onFilterReviews(ReviewType.Good)}
@@ -80,7 +104,7 @@ export const ReviewSummary: FC<IReviewSummaryProps> = ({
           label="Poor"
           value={round(calculateRatingByType(ReviewType.Poor), 2)}
           onFilter={() => onFilterReviews(ReviewType.Poor)}
-        />
+        /> */}
       </div>
 
       <div className="flex justify-center">

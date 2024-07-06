@@ -7,15 +7,17 @@ import { useReviewContext } from "./hooks/useReviewContext";
 import { cn } from "@/utils/mergeClass";
 
 export const ProductReview: FC = () => {
-  const { reviews, loading } = useReviewContext();
+  const { reviews, loading, aggregate, handleLoadReviewByRating } =
+    useReviewContext();
 
   return (
     <ReviewContainer className="reviews-layout">
       <ReviewSummary
         reviews={reviews}
-        onFilterReviews={console.log}
+        onFilterReviews={handleLoadReviewByRating}
         className="review-summary"
         isLoading={loading.isLoading}
+        aggregate={aggregate}
       />
 
       <ReviewList

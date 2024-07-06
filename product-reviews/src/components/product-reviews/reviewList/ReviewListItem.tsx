@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Review } from "@/components/product-reviews/types/Review";
 import { StarRating } from "../components/StarRating";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
+import { cn } from "@/utils/mergeClass";
 
 interface IReviewListItemProps {
   review: Review;
@@ -23,17 +24,25 @@ export const ReviewListItem: FC<IReviewListItemProps> = ({ review }) => {
   }
 
   return (
-    <div ref={ref} className="flex flex-col gap-4">
+    <div className={cn("flex flex-col gap-4")}>
       <div className="flex gap-4">
         {/* HEADER */}
         <div className="relative">
           {avatarUrl ? (
-            <div className="h-12 w-12 rounded-full overflow-hidden">
+            <div
+              className={cn(
+                "h-12 w-12 rounded-full overflow-hidden transition-opacity ease-in duration-500 opacity-0",
+                {
+                  "opacity-100": entry?.isIntersecting,
+                }
+              )}
+              ref={ref}
+            >
               {entry?.isIntersecting && (
                 <img
                   src={avatarUrl}
                   alt={user?.name}
-                  className="w-full h-auto  object-cover"
+                  className="w-full h-auto object-cover"
                 />
               )}
             </div>
@@ -61,6 +70,8 @@ export const ReviewListItem: FC<IReviewListItemProps> = ({ review }) => {
           </span>
         </div>
       </div>
+
+      {/* CONTENT */}
       <p className="text-neutral-600 text-base font-normal">{review.content}</p>
     </div>
   );

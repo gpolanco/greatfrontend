@@ -5,7 +5,7 @@ interface ReviewCountType {
   rating: number;
 }
 
-interface ReviewAggregateType {
+export interface ReviewAggregateType {
   counts: ReviewCountType[];
   rating: number;
   total: number;

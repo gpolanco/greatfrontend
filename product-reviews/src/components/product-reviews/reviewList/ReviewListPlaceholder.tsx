@@ -6,7 +6,10 @@ interface IReviewListPlaceholderProps {}
 const PlaceHolderLine = () => <div className="h-3 bg-neutral-200" />;
 
 const PlaceHolderReviewItem = () => (
-  <div className="flex flex-col gap-4 animate-pulse transition-opacity">
+  <div
+    aria-label="review list loading"
+    className="flex flex-col gap-4 animate-pulse transition-opacity"
+  >
     <div className="flex gap-4">
       <div className="relative">
         <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center" />
