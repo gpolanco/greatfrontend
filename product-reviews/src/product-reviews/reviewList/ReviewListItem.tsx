@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Review } from "@/components/product-reviews/types/Review";
+import { Review } from "@/product-reviews/types/Review";
 import { StarRating } from "../components/StarRating";
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { cn } from "@/utils/mergeClass";
@@ -43,11 +43,15 @@ export const ReviewListItem: FC<IReviewListItemProps> = ({ review }) => {
                   src={avatarUrl}
                   alt={user?.name}
                   className="w-full h-auto object-cover"
+                  aria-label="user-avatar"
                 />
               )}
             </div>
           ) : (
-            <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
+            <div
+              aria-label="user-avatar-letters"
+              className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center"
+            >
               <span className="text-neutral-600 font-bold">{avatarName}</span>
             </div>
           )}
@@ -56,12 +60,15 @@ export const ReviewListItem: FC<IReviewListItemProps> = ({ review }) => {
         {/* USER */}
         <div className="flex justify-between w-full">
           <div className="flex flex-col gap-1">
-            <h3 className="text-neutral-900 text-base font-semibold leading-normal">
+            <h3
+              aria-label="rating-user-name"
+              className="text-neutral-900 text-base font-semibold leading-normal"
+            >
               {user?.name}
             </h3>
             <StarRating value={review.rating} />
           </div>
-          <span className="text-neutral-600 text-xs">
+          <span aria-label="rating-date" className="text-neutral-600 text-xs">
             {new Date(review.created_at).toLocaleDateString("en-US", {
               year: "numeric",
               month: "short",
@@ -73,7 +80,10 @@ export const ReviewListItem: FC<IReviewListItemProps> = ({ review }) => {
 
       {/* CONTENT */}
       {review.content && (
-        <p className="text-neutral-600 text-base font-normal">
+        <p
+          aria-label="rating-content"
+          className="text-neutral-600 text-base font-normal"
+        >
           {review.content}
         </p>
       )}

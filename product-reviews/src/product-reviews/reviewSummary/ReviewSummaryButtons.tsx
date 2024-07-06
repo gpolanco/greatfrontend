@@ -23,6 +23,7 @@ export const ReviewSummaryButtons: FC<IReviewSummaryButtonsProps> = ({
           className="w-full sm:w-auto order-2  sm:order-1"
           color="link"
           onClick={onClearFilter}
+          aria-label="clear-filter-button"
         >
           Clear filter
         </Button>
@@ -32,6 +33,7 @@ export const ReviewSummaryButtons: FC<IReviewSummaryButtonsProps> = ({
           "w-full order-1  sm:order-2 rounded-none shadow-none sm:rounded sm:w-auto sm:shadow",
           { "sm:w-2/4": isFilterActive }
         )}
+        aria-label="write-review-button"
       >
         Write a review
       </Button>

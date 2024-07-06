@@ -49,19 +49,27 @@ export const ReviewSummary: FC<IReviewSummaryProps> = ({ className }) => {
   return (
     <div className={cn(className, "pb-10 lg:pb-0")}>
       <div className="px-6 ">
-        <h4 className="text-neutral-900 flex justify-start text-xl font-semibold leading-7 pb-2">
+        <h4
+          aria-label="overall-rating"
+          className="text-neutral-900 flex justify-start text-xl font-semibold leading-7 pb-2"
+        >
           Overall Rating
         </h4>
 
         <div className="flex gap-2">
-          <span className="text-neutral-900 text-base font-semibold leading-normal">
+          <span
+            aria-label="average-rating"
+            className="text-neutral-900 text-base font-semibold leading-normal"
+          >
             {averageRating}
           </span>
 
           <StarRating value={averageRating} />
 
           <small className="text-neutral-600 text-sm font-normal leading-tight">
-            Based on {aggregate?.total ?? 0} reviews
+            Based on{" "}
+            <span aria-label="total-reviews">{aggregate?.total ?? 0}</span>{" "}
+            reviews
           </small>
         </div>
 
