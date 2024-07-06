@@ -2,8 +2,12 @@ import { useContext } from "react";
 import {
   ReviewContext,
   type ReviewContextProps,
-} from "../content/ReviewContext";
+} from "../context/ReviewContext";
 
+/**
+ * Hook to use the ReviewContext
+ * @returns ReviewContextProps
+ */
 export const useReviewContext = (): ReviewContextProps => {
   const context = useContext(ReviewContext);
 
