@@ -35,9 +35,13 @@ export const ReviewList: FC<IReviewListProps> = ({ className }) => {
 
   return (
     <div
-      className={cn(className, "px-8 lg:pr-8 place-self-start relative", {
-        "opacity-60": loading.isLoadingMore || loading.isFiltering,
-      })}
+      className={cn(
+        className,
+        "bg-white px-8 lg:pr-8 place-self-start relative",
+        {
+          "opacity-60": loading.isLoadingMore || loading.isFiltering,
+        }
+      )}
     >
       <div className="flex flex-col gap-6">
         {sortReviews(reviews).map((review, index) => (

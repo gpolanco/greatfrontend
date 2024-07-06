@@ -1,4 +1,3 @@
-import { Button } from "../components/button";
 import { StarRating } from "../components/StarRating";
 import { RatingValue } from "./RatingValue";
 import { FC, useMemo } from "react";
@@ -8,6 +7,7 @@ import { cn } from "@/utils/mergeClass";
 import { normalizeEnumKeyText } from "../utils/normatizeEnumKeyText";
 import { ReviewSummaryPlaceholder } from "./ReviewSummaryPlaceholder";
 import { useReviewContext } from "../hooks/useReviewContext";
+import { ReviewSummaryButtons } from "./ReviewSummaryButtons";
 
 interface IReviewSummaryProps {
   className?: string;
@@ -47,46 +47,45 @@ export const ReviewSummary: FC<IReviewSummaryProps> = ({ className }) => {
   }
 
   return (
-    <div className={cn(className, "px-6 pb-10 lg:pb-0")}>
-      <h4 className="text-neutral-900 flex justify-start text-xl font-semibold leading-7 pb-2">
-        Overall Rating
-      </h4>
+    <div className={cn(className, "pb-10 lg:pb-0")}>
+      <div className="px-6 ">
+        <h4 className="text-neutral-900 flex justify-start text-xl font-semibold leading-7 pb-2">
+          Overall Rating
+        </h4>
 
-      <div className="flex gap-2">
-        <span className="text-neutral-900 text-base font-semibold leading-normal">
-          {averageRating}
-        </span>
+        <div className="flex gap-2">
+          <span className="text-neutral-900 text-base font-semibold leading-normal">
+            {averageRating}
+          </span>
 
-        <StarRating value={averageRating} />
+          <StarRating value={averageRating} />
 
-        <small className="text-neutral-600 text-sm font-normal leading-tight">
-          Based on {aggregate?.total ?? 0} reviews
-        </small>
+          <small className="text-neutral-600 text-sm font-normal leading-tight">
+            Based on {aggregate?.total ?? 0} reviews
+          </small>
+        </div>
+
+        <div className="py-6 flex flex-col gap-4 flex-1 ">
+          {aggregate?.counts
+            .sort((acc, current) => current.rating - acc.rating)
+            .map(({ rating }) => {
+              return (
+                <RatingValue
+                  key={rating}
+                  label={normalizeEnumKeyText(ReviewType[rating].toString())}
+                  value={round(calculateRatingByType(rating), 0)}
+                  onFilter={() => handleFilter(rating)}
+                />
+              );
+            })}
+        </div>
       </div>
 
-      <div className="py-6 flex flex-col gap-4 flex-1 ">
-        {aggregate?.counts
-          .sort((acc, current) => current.rating - acc.rating)
-          .map(({ rating }) => {
-            return (
-              <RatingValue
-                key={rating}
-                label={normalizeEnumKeyText(ReviewType[rating].toString())}
-                value={round(calculateRatingByType(rating), 0)}
-                onFilter={() => handleFilter(rating)}
-              />
-            );
-          })}
-      </div>
-
-      <div className="flex justify-center gap-6">
-        {isFilterActive && (
-          <Button color="link" onClick={handleClearFilter}>
-            Clear filter
-          </Button>
-        )}
-        <Button>Write a review</Button>
-      </div>
+      <ReviewSummaryButtons
+        onClearFilter={handleClearFilter}
+        onWriteReview={console.log}
+        isFilterActive={isFilterActive}
+      />
     </div>
   );
 };
