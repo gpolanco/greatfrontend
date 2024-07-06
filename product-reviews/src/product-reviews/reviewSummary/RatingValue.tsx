@@ -34,7 +34,7 @@ export const RatingValue: FC<IRatingValueProps> = ({
         <button
           type="button"
           onClick={onFilter}
-          className="h-6 px-2 justify-start items-center gap-1.5 inline-flex text-indigo-800 text-base font-medium leading-normal focus:outline-none focus:ring focus:ring-indigo-200 rounded"
+          className="h-6 px-2 justify-start items-center gap-1.5 inline-flex  text-base font-medium leading-normal focus:outline-none focus:ring focus:ring-indigo-200 rounded"
         >
           {label}
         </button>
