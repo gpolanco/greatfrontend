@@ -1,14 +1,7 @@
 import { createContext, FC } from "react";
-import { Review } from "../types/Review";
-import { useLoadReviews } from "../hooks/useLoadReviews";
+import { useReviewsData } from "../hooks/useLoadReviews";
 
-export interface ReviewContextProps {
-  reviews: Review[];
-  isLoading: boolean;
-  error: string | null;
-  nextCountLoad: number;
-  handleLoadReviews: () => void;
-}
+export type ReviewContextProps = ReturnType<typeof useReviewsData>;
 
 export const ReviewContext = createContext<ReviewContextProps | undefined>(
   undefined
@@ -19,17 +12,26 @@ interface ReviewProviderProps {
 }
 
 export const ReviewProvider: FC<ReviewProviderProps> = ({ children }) => {
-  const { handleLoadReviews, isLoading, error, nextCountLoad, reviews } =
-    useLoadReviews();
+  const {
+    handleLoadMoreReviews,
+    handleLoadReviewByRating,
+    loading,
+    error,
+    hasMore,
+    reviews,
+    reviewToShow,
+  } = useReviewsData();
 
   return (
     <ReviewContext.Provider
       value={{
         reviews,
-        isLoading,
+        loading,
         error,
-        nextCountLoad,
-        handleLoadReviews,
+        hasMore,
+        handleLoadMoreReviews,
+        handleLoadReviewByRating,
+        reviewToShow,
       }}
     >
       {children}

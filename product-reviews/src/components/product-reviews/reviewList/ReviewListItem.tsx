@@ -1,17 +1,20 @@
 import { FC } from "react";
 import { Review } from "@/components/product-reviews/types/Review";
-import userData from "@/data/users.json";
-import { User } from "@/components/product-reviews/types/User";
 import { StarRating } from "../components/StarRating";
-
-const users = userData as User[];
+import { useIntersectionObserver } from "@uidotdev/usehooks";
 
 interface IReviewListItemProps {
   review: Review;
 }
 
 export const ReviewListItem: FC<IReviewListItemProps> = ({ review }) => {
-  const user = users.find((user) => user.user_id === review.user_id);
+  const [ref, entry] = useIntersectionObserver({
+    threshold: 0,
+    root: null,
+    rootMargin: "0px",
+  });
+
+  const { user } = review;
   const avatarUrl = user?.avatar_url || null;
   const avatarName = user?.name.slice(0, 2).toUpperCase() || null;
 
@@ -20,17 +23,19 @@ export const ReviewListItem: FC<IReviewListItemProps> = ({ review }) => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div ref={ref} className="flex flex-col gap-4">
       <div className="flex gap-4">
         {/* HEADER */}
         <div className="relative">
           {avatarUrl ? (
             <div className="h-12 w-12 rounded-full overflow-hidden">
-              <img
-                src={avatarUrl}
-                alt={user?.name}
-                className="w-full h-auto  object-cover"
-              />
+              {entry?.isIntersecting && (
+                <img
+                  src={avatarUrl}
+                  alt={user?.name}
+                  className="w-full h-auto  object-cover"
+                />
+              )}
             </div>
           ) : (
             <div className="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">

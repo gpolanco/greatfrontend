@@ -1,3 +1,5 @@
+import { User } from "./User";
+
 export interface Review {
   product_id: string;
   user_id: string;
@@ -5,4 +7,5 @@ export interface Review {
   content: string | null;
   created_at: string;
   avatar?: string;
+  user: User;
 }

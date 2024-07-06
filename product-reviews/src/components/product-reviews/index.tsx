@@ -4,10 +4,10 @@ import { ReviewList } from "@/components/product-reviews/reviewList";
 import { ReviewContainer } from "@/components/product-reviews/reviewContainer";
 import { ReviewSummary } from "@/components/product-reviews/reviewSummary";
 import { useReviewContext } from "./hooks/useReviewContext";
+import { cn } from "@/utils/mergeClass";
 
 export const ProductReview: FC = () => {
-  const { reviews, isLoading } = useReviewContext();
-  console.log({ reviews });
+  const { reviews, loading } = useReviewContext();
 
   return (
     <ReviewContainer className="reviews-layout">
@@ -15,13 +15,15 @@ export const ProductReview: FC = () => {
         reviews={reviews}
         onFilterReviews={console.log}
         className="review-summary"
-        isLoading={isLoading}
+        isLoading={loading.isLoading}
       />
 
       <ReviewList
-        isLoading={isLoading}
+        isLoading={loading.isLoading}
         reviews={reviews}
-        className="review-list"
+        className={cn("review-list", {
+          "opacity-60": loading.isLoadingMore,
+        })}
       />
     </ReviewContainer>
   );

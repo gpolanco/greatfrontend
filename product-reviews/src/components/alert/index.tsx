@@ -35,7 +35,7 @@ export const Alert: FC<IAlertProps> = ({
       className={cn("p-2 rounded", className, {
         "bg-red-300 text-red-800": type === "error",
         "bg-yellow-300 text-yellow-800": type === "warning",
-        "bg-blue-300 text-blue-800": type === "info",
+        "bg-blue-100 text-blue-500": type === "info",
         "flex items-center justify-center": align === "center",
       })}
     >
