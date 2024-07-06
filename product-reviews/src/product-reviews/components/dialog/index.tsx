@@ -21,12 +21,12 @@ export const Dialog: FC<IDialogProps> = ({
       open
       onClose={onClose}
       aria-labelledby="modal-title"
-      className="absolute w-full h-full bg-gray-500 opacity-90 flex justify-center items-center"
+      className="absolute w-full h-full bg-neutral-950 opacity-90 flex justify-center items-center"
       role="dialog"
       aria-modal="true"
     >
-      <div className="fixed w-full h-full sm:h-[90vh] flex items-center justify-center">
-        <div className="bg-white fixed h-full sm:h-[90vh] container sm:rounded-lg z-50 overflow-y-auto">
+      <div className="fixed w-full h-full sm:w-[1008]  sm:h-[80vh] flex items-center justify-center">
+        <div className="bg-white fixed h-full sm:w-[1008] sm:h-[80vh] container sm:rounded-lg z-50 overflow-y-auto">
           {/* CONTENT */}
           <div className="modal-content mx-auto h-auto text-left">
             {/* HEADER */}
