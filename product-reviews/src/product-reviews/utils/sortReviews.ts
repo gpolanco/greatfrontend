@@ -1,4 +1,4 @@
-import { Review } from "@/components/product-reviews/types/Review";
+import { Review } from "../types/Review";
 
 export const sortReviews = (reviews: Review[]) => {
   return reviews.sort((a, b) => {
