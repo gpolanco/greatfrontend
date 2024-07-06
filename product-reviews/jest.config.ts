@@ -13,4 +13,9 @@ export default {
     "\\.(gif|ttf|eot|svg|png)$": "<rootDir>/test/__mocks__/fileMock.js",
   },
   moduleFileExtensions: ["js", "jsx", "json", "ts", "tsx"],
+  collectCoverage: true,
+  collectCoverageFrom: [
+    "src/product-reviews/**/*.ts",
+    "src/product-reviews/**/*.tsx",
+  ],
 };
