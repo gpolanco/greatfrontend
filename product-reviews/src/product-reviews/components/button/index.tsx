@@ -38,7 +38,7 @@ export const Button: FC<IButtonProps> = ({
     <button
       {...props}
       className={cn(
-        "px-5 py-3 bg-white rounded shadow border border-neutral-200 justify-center items-center gap-1.5 inline-flex hover:bg-neutral-50 active:bg-neutral-50 focus:bg-neutral-50 disabled:bg-neutral-100 disabled:cursor-not-allowed focus:outline-none focus:ring focus:ring-indigo-200",
+        "px-5  py-3  bg-white text-neutral-900 rounded shadow border border-neutral-200 justify-center items-center gap-1.5 inline-flex hover:bg-neutral-50 active:bg-neutral-50 focus:bg-neutral-50 disabled:bg-neutral-100 disabled:cursor-not-allowed focus:outline-none focus:ring focus:ring-indigo-200",
         className,
         {
           "bg-neutral-300 text-neutral-400 leading-normal shadow-none border-none":

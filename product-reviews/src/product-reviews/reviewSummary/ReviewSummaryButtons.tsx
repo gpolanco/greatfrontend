@@ -14,13 +14,13 @@ export const ReviewSummaryButtons: FC<IReviewSummaryButtonsProps> = ({
 }) => {
   return (
     <div
-      className={cn("flex justify-center sm:gap-6 w-full", {
+      className={cn("flex justify-center sm:gap-6", {
         "flex-col sm:flex-row": isFilterActive,
       })}
     >
       {isFilterActive && (
         <Button
-          className="w-full sm:w-auto order-2  sm:order-1"
+          className="order-2  sm:order-1"
           color="link"
           onClick={onClearFilter}
           aria-label="clear-filter-button"
@@ -29,10 +29,7 @@ export const ReviewSummaryButtons: FC<IReviewSummaryButtonsProps> = ({
         </Button>
       )}
       <Button
-        className={cn(
-          "w-full order-1  sm:order-2 rounded-none shadow-none sm:rounded sm:w-auto sm:shadow",
-          { "sm:w-2/4": isFilterActive }
-        )}
+        className={cn("order-1  sm:order-2")}
         aria-label="write-review-button"
       >
         Write a review
