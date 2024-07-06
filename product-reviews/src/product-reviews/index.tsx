@@ -9,7 +9,7 @@ export const ProductReview: FC = () => {
     <ReviewProvider>
       <div className="reviews-layout">
         <ReviewSummary className="review-summary" />
-        <ReviewList className="review-list" />
+        <ReviewList className="review-list pb-8" />
       </div>
     </ReviewProvider>
   );

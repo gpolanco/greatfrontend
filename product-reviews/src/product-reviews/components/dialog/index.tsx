@@ -20,9 +20,36 @@ export const Dialog: FC<IDialogProps> = ({
     <dialog
       open
       onClose={onClose}
-      className="w-screen h-screen opacity-70 flex items-start justify-center bg-neutral-950 sm:p-4"
+      aria-labelledby="modal-title"
+      className="absolute w-full h-dvh bg-gray-500 opacity-90"
+      role="dialog"
+      aria-modal="true"
     >
-      <div className="bg-white h-full w-[1008px] container sm:rounded-lg flex flex-col">
+      <div className="fixed w-full h-full top-4 left-0 flex items-center justify-center">
+        <div className="bg-white fixed h-full container sm:rounded-lg z-50 overflow-y-auto">
+          {/* CONTENT */}
+          <div className="modal-content mx-auto h-auto text-left">
+            {/* HEADER */}
+            <div className="bg-white sticky top-0 z-50 flex justify-between items-center p-6">
+              <h4>{title}</h4>
+
+              <button
+                type="button"
+                className="w-6 h-6 focus:outline-none focus:ring focus:ring-indigo-200 rounded"
+              >
+                <IconClose />
+              </button>
+            </div>
+
+            {/* CONTENT */}
+            <div className="flex flex-1 w-full">{children}</div>
+
+            {/* FOOTER */}
+          </div>
+        </div>
+      </div>
+
+      {/* <div className="bg-white h-full w-[1008px] container sm:rounded-lg flex flex-col">
         <div className="flex justify-between p-6">
           <h4>{title}</h4>
 
@@ -35,7 +62,7 @@ export const Dialog: FC<IDialogProps> = ({
         </div>
 
         <div className="flex flex-1 w-full">{children}</div>
-      </div>
+      </div> */}
     </dialog>
   );
 };

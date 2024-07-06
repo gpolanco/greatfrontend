@@ -47,53 +47,55 @@ export const ReviewSummary: FC<IReviewSummaryProps> = ({ className }) => {
   }
 
   return (
-    <div className={cn(className, "pb-10 lg:pb-0")}>
-      <div className="px-6 ">
-        <h4
-          aria-label="overall-rating"
-          className="text-neutral-900 flex justify-start text-xl font-semibold leading-7 pb-2"
-        >
-          Overall Rating
-        </h4>
-
-        <div className="flex gap-2">
-          <span
-            aria-label="average-rating"
-            className="text-neutral-900 text-base font-semibold leading-normal"
+    <div className={cn(className, "pb-10 lg:pb-0 lg:h-full")}>
+      <div className="lg:sticky lg:top-[72px]">
+        <div className="px-6 ">
+          <h4
+            aria-label="overall-rating"
+            className="text-neutral-900 flex justify-start text-xl font-semibold leading-7 pb-2"
           >
-            {averageRating}
-          </span>
+            Overall Rating
+          </h4>
 
-          <StarRating value={averageRating} />
+          <div className="flex gap-2">
+            <span
+              aria-label="average-rating"
+              className="text-neutral-900 text-base font-semibold leading-normal"
+            >
+              {averageRating}
+            </span>
 
-          <small className="text-neutral-600 text-sm font-normal leading-tight">
-            Based on{" "}
-            <span aria-label="total-reviews">{aggregate?.total ?? 0}</span>{" "}
-            reviews
-          </small>
+            <StarRating value={averageRating} />
+
+            <small className="text-neutral-600 text-sm font-normal leading-tight">
+              Based on{" "}
+              <span aria-label="total-reviews">{aggregate?.total ?? 0}</span>{" "}
+              reviews
+            </small>
+          </div>
+
+          <div className="py-6 flex flex-col gap-4 flex-1 ">
+            {aggregate?.counts
+              .sort((acc, current) => current.rating - acc.rating)
+              .map(({ rating }) => {
+                return (
+                  <RatingValue
+                    key={rating}
+                    label={normalizeEnumKeyText(ReviewType[rating].toString())}
+                    value={round(calculateRatingByType(rating), 0)}
+                    onFilter={() => handleFilter(rating)}
+                  />
+                );
+              })}
+          </div>
         </div>
 
-        <div className="py-6 flex flex-col gap-4 flex-1 ">
-          {aggregate?.counts
-            .sort((acc, current) => current.rating - acc.rating)
-            .map(({ rating }) => {
-              return (
-                <RatingValue
-                  key={rating}
-                  label={normalizeEnumKeyText(ReviewType[rating].toString())}
-                  value={round(calculateRatingByType(rating), 0)}
-                  onFilter={() => handleFilter(rating)}
-                />
-              );
-            })}
-        </div>
+        <ReviewSummaryButtons
+          onClearFilter={handleClearFilter}
+          onWriteReview={console.log}
+          isFilterActive={isFilterActive}
+        />
       </div>
-
-      <ReviewSummaryButtons
-        onClearFilter={handleClearFilter}
-        onWriteReview={console.log}
-        isFilterActive={isFilterActive}
-      />
     </div>
   );
 };
