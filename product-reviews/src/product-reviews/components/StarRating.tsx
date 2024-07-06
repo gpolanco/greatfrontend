@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react";
-import { IconStar } from "../../icons/IconStar";
+import { IconStar } from "./icons/IconStar";
 
 interface IStarRatingProps {
   value: number;

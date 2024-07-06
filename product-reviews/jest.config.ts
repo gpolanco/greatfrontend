@@ -12,5 +12,5 @@ export default {
   moduleNameMapper: {
     "\\.(gif|ttf|eot|svg|png)$": "<rootDir>/test/__mocks__/fileMock.js",
   },
-  oduleFileExtensions: ["js", "jsx", "json", "ts", "tsx"],
+  moduleFileExtensions: ["js", "jsx", "json", "ts", "tsx"],
 };

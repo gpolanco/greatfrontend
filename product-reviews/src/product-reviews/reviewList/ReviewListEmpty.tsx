@@ -1,4 +1,4 @@
-import { ChatSmileLine } from "@/components/icons/ChatSmileLine";
+import { ChatSmileLine } from "@/product-reviews/components/icons/ChatSmileLine";
 import { FC } from "react";
 
 interface IReviewListEmptyProps {}

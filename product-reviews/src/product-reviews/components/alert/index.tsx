@@ -1,7 +1,8 @@
-import { cn } from "@/utils/mergeClass";
 import { FC, ReactNode } from "react";
 import { CiWarning } from "react-icons/ci";
 import { MdOutlineInfo } from "react-icons/md";
+
+import { cn } from "@/utils/mergeClass";
 
 interface IAlertProps {
   children?: ReactNode;

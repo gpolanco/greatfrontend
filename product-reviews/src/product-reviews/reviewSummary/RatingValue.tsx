@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { cn } from "../../../utils/mergeClass";
+import { cn } from "@/utils/mergeClass";
 
 interface IRatingValueProps {
   /**

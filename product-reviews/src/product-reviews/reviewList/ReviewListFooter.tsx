@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useReviewContext } from "../hooks/useReviewContext";
-import { Button } from "@/components/button";
+import { Button } from "@/product-reviews/components/button";
 import { cn } from "@/utils/mergeClass";
 
 interface IReviewListFooterProps {

@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { Dialog } from "./components/dialog";
-import { ProductReview } from "./components/product-reviews";
-import { ReviewProvider } from "./components/product-reviews/content/ReviewContext";
+import { ReviewProvider } from "./product-reviews/content/ReviewContext";
+import { Dialog } from "./product-reviews/components/dialog";
+import { ProductReview } from "./product-reviews";
 
 export const App = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <Dialog isOpen={isOpen} onClose={() => setIsOpen(false)}>
-      <ReviewProvider>
+    <ReviewProvider>
+      <Dialog isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <ProductReview />
-      </ReviewProvider>
-    </Dialog>
+      </Dialog>
+    </ReviewProvider>
   );
 };

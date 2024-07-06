@@ -1,4 +1,4 @@
-import { Button } from "../../button";
+import { Button } from "../components/button";
 import { StarRating } from "../components/StarRating";
 import { RatingValue } from "./RatingValue";
 import { FC, useMemo } from "react";

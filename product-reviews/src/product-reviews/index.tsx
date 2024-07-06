@@ -1,8 +1,8 @@
 import { FC } from "react";
 
-import { ReviewList } from "@/components/product-reviews/reviewList";
-import { ReviewContainer } from "@/components/product-reviews/reviewContainer";
-import { ReviewSummary } from "@/components/product-reviews/reviewSummary";
+import { ReviewList } from "@/product-reviews/reviewList";
+import { ReviewContainer } from "@/product-reviews/reviewContainer";
+import { ReviewSummary } from "@/product-reviews/reviewSummary";
 
 export const ProductReview: FC = () => {
   return (
